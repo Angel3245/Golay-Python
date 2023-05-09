@@ -32,7 +32,7 @@ class Golay:
                 [1,1,0,1,1,0,1,1,1,0,0,0],
                 [1,0,1,1,0,1,1,1,0,0,0,1]]
     
-        # Eliminamos la ultima columna de la matriz A
+        # Eliminamos la ultima columna de la matriz A para G23
         self.A_prima = [[0,1,1,1,1,1,1,1,1,1,1],
                         [1,1,1,0,1,1,1,0,0,0,1],
                         [1,1,0,1,1,1,0,0,0,1,0],
@@ -128,9 +128,9 @@ class Golay:
         '''Rellenar datos recibidos con 1s para que el numero de bits sea múltiplo de n. Añadir prefijo indicando numero de 1s añadido'''
         prefijo, relleno = '',''
         tamano = len(datos)
-        remainder = tamano % self.n
-        if remainder != 0:
-            tamano_relleno = self.n - remainder
+        resto = tamano % self.n
+        if resto != 0:
+            tamano_relleno = self.n - resto
             prefijo = '{0:012b}'.format(tamano_relleno)
             relleno = '1' * tamano_relleno
         return prefijo + datos + relleno
@@ -195,7 +195,7 @@ class Golay:
 
         if w_s <= 3:
             error = [s[0] + [0] * 12] #(s,0)
-            print("La palabra "+r+" tiene un error ("+str(s[0])+",0)")
+            print("La palabra "+r+" tiene un error (s,0): ("+str(s[0])+",0)")
         
         #(iii) Si w(s + ai) ≤ 2 para alguna fila ai de la matriz A, entonces el vector error es e = (s + ai,ui)
         else:
@@ -204,7 +204,7 @@ class Golay:
                 peso_sum = sum(sum_vec[0]) #w(s + ai)
                 if peso_sum <= 2:
                     error = [sum_vec[0] + self.I12[j]] #(s + ai,ui)
-                    print("La palabra "+r+" tiene un error ("+str(sum_vec[0])+","+str(self.I12[j])+")")
+                    print("La palabra "+r+" tiene un error (s + ai,ui): ("+str(sum_vec[0])+","+str(self.I12[j])+")")
                     break
 
             #(iv) Se calcula el segundo síndrome de la palabra r, sA.
@@ -215,7 +215,7 @@ class Golay:
                 #(v) Si w(sA) ≤ 3, entonces el vector error es e = (0,sA).
                 if w_sA <= 3:
                     error = [[0] * 12 + sA[0]]
-                    print("La palabra "+r+" tiene un error (0,"+str(sA[0])+")")
+                    print("La palabra "+r+" tiene un error (0,sA): (0,"+str(sA[0])+")")
 
                 #(vi) Si w(sA+ai) ≤ 2 para alguna fila ai de la matriz A, entonces el vector error es e = (ui,sA + ai).
                 for j in range(12):
@@ -223,7 +223,7 @@ class Golay:
                     peso_sum = sum(sum_vec[0]) #w(sA + ai)
                     if peso_sum <= 2:
                         error = [self.I12[j] + sum_vec[0]]
-                        print("La palabra "+r+" tiene un error ("+str(self.I12[j])+","+str(sum_vec[0])+")")
+                        print("La palabra "+r+" tiene un error (ui,sA + ai): ("+str(self.I12[j])+","+str(sum_vec[0])+")")
                         break
 
         #(vii) Si todavía no se ha determinado el vector error e, solicitar una retransmisión pues se han producido más de tres errores.
