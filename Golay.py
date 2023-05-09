@@ -243,10 +243,10 @@ class Golay:
             u = self.decodificar23(datos)
 
         # Leemos el prefijo para comprobar cuantos bits de relleno existen
-        relleno = u[:12]
+        prefijo = u[:12]
 
         # Eliminamos el prefijo y los bits de relleno
-        u = u[12:-int(relleno,2)]
+        u = u[12:-int(prefijo,2)]
 
         return u
     
